@@ -1,0 +1,12 @@
+.admin-layout-container {
+  display: flex;
+  min-height: 100vh;
+  position: relative;
+}
+
+.admin-main-content {
+  flex-grow: 1;
+  padding: 20px;
+  margin-left: 250px; /* Adjust to match sidebar width */
+  position: relative;
+}

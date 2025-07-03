@@ -1,0 +1,25 @@
+
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+:root {
+  --bs-primary: #4e73df;
+  --bs-primary-rgb: 78, 115, 223;
+  --bs-light: #f8f9fa;
+  --bs-dark: #5a5c69;
+}
+
+.nav-pills .nav-link.active {
+  background-color: var(--bs-primary);
+}
