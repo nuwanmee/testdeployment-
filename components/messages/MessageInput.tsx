@@ -3,7 +3,7 @@
 import { useRef, useState } from 'react';
 import { Button } from '../ui/button';
 import { Send } from 'lucide-react';
-import { createMessage } from '@/data/message';
+import { createMessage } from '@/data/messages';
 import { useRouter } from 'next/navigation';
 
 interface MessageInputProps {

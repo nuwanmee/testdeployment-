@@ -3,7 +3,7 @@
 
 import { useEffect } from 'react';
 import { useProfileStore } from '@/stores/profileStore';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 

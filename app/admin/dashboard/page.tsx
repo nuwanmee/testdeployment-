@@ -4,7 +4,8 @@
 import { useProfileStore } from '@/stores/profileStore';
 import { useEffect } from 'react';
 import AdminNotificationCard from '@/components/admin/AdminNotificationCard';
-import ProfileApprovalLists from '@/components/admin/ProfileApprovalLists';
+import ProfileApprovalLists from '@/components/admin/ProfileApprovalLIsts';
+
 
 export default function AdminDashboard() {
   const { pendingProfiles, fetchProfiles, loading, error } = useProfileStore();
