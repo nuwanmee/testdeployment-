@@ -5,12 +5,12 @@ import { redirect } from 'next/navigation'
 import Navbar from '@/components/layout/Navbar'
 import BackButton from '@/components/ui/BackButton'
 
-interface Props {
+type PageProps = {
   params: { id: string }
-  searchParams: { [key: string]: string | string[] | undefined }
+  searchParams: Record<string, string | string[] | undefined>
 }
 
-export default async function UserProfile({ params }: Props) {
+export default async function UserProfile({ params }: PageProps) {
   const session = await getServerSession(authOptions)
   
   if (!session || session.user.role !== 'ADMIN') {
