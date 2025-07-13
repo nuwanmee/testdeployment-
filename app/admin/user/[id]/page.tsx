@@ -5,20 +5,18 @@ import { redirect } from 'next/navigation'
 import Navbar from '@/components/layout/Navbar'
 import BackButton from '@/components/ui/BackButton'
 
-type PageProps = {
-  params: { id: string }
-  searchParams: Record<string, string | string[] | undefined>
-}
-
-export default async function UserProfile({ params }: PageProps) {
+export default async function UserProfile({ params }: { params: Promise<{ id: string }> }) {
   const session = await getServerSession(authOptions)
   
   if (!session || session.user.role !== 'ADMIN') {
     redirect('/')
   }
 
+  // Await the params Promise in Next.js 15
+  const resolvedParams = await params
+  
   const user = await prisma.user.findUnique({
-    where: { id: parseInt(params.id) },
+    where: { id: parseInt(resolvedParams.id) },
     select: {
       id: true,
       email: true,
@@ -54,6 +52,7 @@ export default async function UserProfile({ params }: PageProps) {
     </div>
   )
 }
+
 
 // import prisma from '@/lib/db'
 // import { getServerSession } from 'next-auth'
