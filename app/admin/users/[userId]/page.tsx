@@ -1,6 +1,6 @@
 import prisma from '@/lib/db'
 import { getServerSession } from 'next-auth'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { authOptions } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import Navbar from '@/components/layout/Navbar'
 import BackButton from '@/components/ui/BackButton'

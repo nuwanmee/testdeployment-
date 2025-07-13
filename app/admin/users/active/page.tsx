@@ -1,9 +1,10 @@
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/lib/auth'
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import ActiveUserTable from '@/components/admin/ActiveUserTable';
 import Navbar from '@/components/layout/Navbar';
+
 import { User } from '@prisma/client';
 
 export default async function ActiveUsersPage() {

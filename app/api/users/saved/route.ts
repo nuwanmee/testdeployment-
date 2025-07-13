@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/lib/auth'
 
 // Function to recursively convert Date objects to ISO strings
 const convertDatesToString = (obj: any): any => {
