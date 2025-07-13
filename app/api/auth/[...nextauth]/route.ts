@@ -1,50 +1,9 @@
-import NextAuth, { NextAuthOptions } from 'next-auth';
-import GoogleProvider from 'next-auth/providers/google';
-import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import prisma from '@/lib/prisma';
-
-const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
-  providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    }),
-    // Add other providers here
-  ],
-  callbacks: {
-    session: async ({ session, user }) => {
-      if (session?.user) {
-        session.user.id = user.id;
-        session.user.role = user.role;
-      }
-      return session;
-    },
-    jwt: async ({ user, token }) => {
-      if (user) {
-        token.uid = user.id;
-        token.role = user.role;
-      }
-      return token;
-    },
-  },
-  session: {
-    strategy: 'database',
-  },
-  pages: {
-    signIn: '/auth/signin',
-    error: '/auth/error',
-  },
-};
+import NextAuth from 'next-auth';
+import { authOptions } from '@/lib/auth';
 
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
-
-// Export authOptions for use in other files
-// Note: This creates a separate module export that other files can import
-export { authOptions };
-
 
 // // app/api/auth/[...nextauth]/route.ts
 // import NextAuth, { NextAuthOptions } from 'next-auth';
