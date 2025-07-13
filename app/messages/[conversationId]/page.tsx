@@ -2,7 +2,7 @@ import { auth } from '../../../lib/auth(need to remove)';
 import ChatHeader from '@/components/messages/ChatHeader';
 import MessageInput from '@/components/messages/MessageInput';
 import MessagesContainer from '@/components/messages/MessagesContainer';
-import { getConversation } from '@/data/message';
+import { getConversations } from '@/data/messages';
 
 export default async function ConversationPage({
   params,
@@ -14,7 +14,7 @@ export default async function ConversationPage({
     return <div>Please login to view messages</div>;
   }
 
-  const conversation = await getConversation(params.conversationId, session.user.id);
+  const conversation = await getConversations(params.conversationId, session.user.id);
 
   if (!conversation) {
     return <div>Conversation not found</div>;
