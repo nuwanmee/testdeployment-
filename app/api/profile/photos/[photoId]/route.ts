@@ -1,7 +1,7 @@
 // app/api/profile/photos/[photoId]/route.ts
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '../../../auth/[...nextauth]/route';
+import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma';
 import { unlink } from 'fs/promises';
 import { join } from 'path';

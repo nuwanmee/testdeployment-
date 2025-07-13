@@ -1,7 +1,7 @@
 // app/api/saved-profiles/list/route.ts
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/lib/auth'
 import prisma from '@/lib/db';
 
 // GET: Get all saved profiles for the current user

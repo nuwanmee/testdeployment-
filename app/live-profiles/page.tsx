@@ -516,7 +516,7 @@
 //   );
 // }
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '../api/auth/[...nextauth]/route';
+import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma';
 import ProfileList from '../../components/ProfileList';
 import ProfileFilter from '../../components/ProfileFilter';

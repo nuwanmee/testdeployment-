@@ -1,14 +1,21 @@
+
 // app/api/preferences/[userId]/route.ts
 import { NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { authOptions } from '@/lib/auth'
 import { getServerSession } from 'next-auth/next'
 import { userPreferencesSchema } from '@/types/preferences'
 
-export async function PUT(request: Request, { params }: { params: { userId: string } }) {
+export async function PUT(
+  request: Request, 
+  { params }: { params: Promise<{ userId: string }> }
+) {
+  // Await the params
+  const resolvedParams = await params
+  
   const session = await getServerSession(authOptions)
   
-  if (!session?.user?.id || session.user.id !== params.userId) {
+  if (!session?.user?.id || session.user.id !== resolvedParams.userId) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
@@ -28,7 +35,7 @@ export async function PUT(request: Request, { params }: { params: { userId: stri
     const validatedData = validation.data
 
     const updated = await prisma.preference.upsert({
-      where: { userId: parseInt(params.userId) },
+      where: { userId: parseInt(resolvedParams.userId) },
       update: {
         // Age
         ageMin: validatedData.ageRange.min,
@@ -63,7 +70,7 @@ export async function PUT(request: Request, { params }: { params: { userId: stri
         educationEnabled: validatedData.education.weight.enabled,
       },
       create: {
-        userId: parseInt(params.userId),
+        userId: parseInt(resolvedParams.userId),
         // Age
         ageMin: validatedData.ageRange.min,
         ageMax: validatedData.ageRange.max,
@@ -111,6 +118,121 @@ export async function PUT(request: Request, { params }: { params: { userId: stri
     )
   }
 }
+
+
+// // app/api/preferences/[userId]/route.ts
+// import { NextResponse } from 'next/server'
+// import prisma from '@/lib/prisma'
+// import { authOptions } from '@/lib/auth'
+// import { getServerSession } from 'next-auth/next'
+// import { userPreferencesSchema } from '@/types/preferences'
+
+// export async function PUT(request: Request, { params }: { params: { userId: string } }) {
+//   const session = await getServerSession(authOptions)
+  
+//   if (!session?.user?.id || session.user.id !== params.userId) {
+//     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+//   }
+
+//   try {
+//     const body = await request.json()
+//     const preferences = body.preferences
+
+//     // Validate against schema
+//     const validation = userPreferencesSchema.safeParse(preferences)
+//     if (!validation.success) {
+//       return NextResponse.json(
+//         { error: 'Invalid preferences data', details: validation.error.flatten() },
+//         { status: 400 }
+//       )
+//     }
+
+//     const validatedData = validation.data
+
+//     const updated = await prisma.preference.upsert({
+//       where: { userId: parseInt(params.userId) },
+//       update: {
+//         // Age
+//         ageMin: validatedData.ageRange.min,
+//         ageMax: validatedData.ageRange.max,
+//         ageWeight: validatedData.ageRange.weight.weight,
+//         ageEnabled: validatedData.ageRange.weight.enabled,
+        
+//         // Height
+//         heightMin: validatedData.heightRange.min,
+//         heightMax: validatedData.heightRange.max,
+//         heightWeight: validatedData.heightRange.weight.weight,
+//         heightEnabled: validatedData.heightRange.weight.enabled,
+        
+//         // Locations - convert array to JSON string
+//         locations: JSON.stringify(validatedData.locations.districts),
+//         locationsWeight: validatedData.locations.weight.weight,
+//         locationsEnabled: validatedData.locations.weight.enabled,
+        
+//         // Religion
+//         religion: validatedData.religion.value,
+//         religionWeight: validatedData.religion.weight.weight,
+//         religionEnabled: validatedData.religion.weight.enabled,
+        
+//         // Caste
+//         caste: validatedData.caste.value,
+//         casteWeight: validatedData.caste.weight.weight,
+//         casteEnabled: validatedData.caste.weight.enabled,
+        
+//         // Education
+//         education: validatedData.education.value,
+//         educationWeight: validatedData.education.weight.weight,
+//         educationEnabled: validatedData.education.weight.enabled,
+//       },
+//       create: {
+//         userId: parseInt(params.userId),
+//         // Age
+//         ageMin: validatedData.ageRange.min,
+//         ageMax: validatedData.ageRange.max,
+//         ageWeight: validatedData.ageRange.weight.weight,
+//         ageEnabled: validatedData.ageRange.weight.enabled,
+        
+//         // Height
+//         heightMin: validatedData.heightRange.min,
+//         heightMax: validatedData.heightRange.max,
+//         heightWeight: validatedData.heightRange.weight.weight,
+//         heightEnabled: validatedData.heightRange.weight.enabled,
+        
+//         // Locations - convert array to JSON string
+//         locations: JSON.stringify(validatedData.locations.districts),
+//         locationsWeight: validatedData.locations.weight.weight,
+//         locationsEnabled: validatedData.locations.weight.enabled,
+        
+//         // Religion
+//         religion: validatedData.religion.value,
+//         religionWeight: validatedData.religion.weight.weight,
+//         religionEnabled: validatedData.religion.weight.enabled,
+        
+//         // Caste
+//         caste: validatedData.caste.value,
+//         casteWeight: validatedData.caste.weight.weight,
+//         casteEnabled: validatedData.caste.weight.enabled,
+        
+//         // Education
+//         education: validatedData.education.value,
+//         educationWeight: validatedData.education.weight.weight,
+//         educationEnabled: validatedData.education.weight.enabled,
+//       }
+//     })
+
+//     return NextResponse.json({ success: true, preferences: updated })
+
+//   } catch (error) {
+//     console.error('Error saving preferences:', error)
+//     return NextResponse.json(
+//       { 
+//         error: 'Failed to save preferences',
+//         details: error instanceof Error ? error.message : 'Unknown error'
+//       },
+//       { status: 500 }
+//     )
+//   }
+// }
 
 
 // // app/api/preferences/[userId]/route.ts
